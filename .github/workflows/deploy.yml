@@ -1,0 +1,46 @@
+name: Deploy Astro to GitHub Pages
+
+on:
+  # mainブランチにプッシュされた時に実行
+  push:
+    branches: [ main ]
+
+  # Actionsタブから手動実行も許可
+  workflow_dispatch:
+
+# 権限設定（GitHub Pagesへのデプロイに必要）
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時実行の制御（進行中のビルドがあればキャンセル）
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout your repository using git
+        uses: actions/checkout@v4
+
+      - name: Install, build, and upload your site
+        # Astro公式のアクションを使用（これ1つで検知・インストール・ビルド・アップロードをやってくれます）
+        uses: withastro/action@v3
+        # パッケージマネージャーの指定（念のため）
+        with:
+            path: .
+            node-version: 20
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
