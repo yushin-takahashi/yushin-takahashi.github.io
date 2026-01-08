@@ -9,7 +9,7 @@
 
 **Live Site:** [https://yushin-takahashi.github.io/](https://yushin-takahashi.github.io/)
 
-## 🛠 Tech Stack
+## Tech Stack
 
 このプロジェクトは、パフォーマンスとメンテナンス性を重視したモダンなスタックで構築されています。
 
@@ -18,7 +18,7 @@
 - **Font:** Google Fonts (Noto Sans JP / Roboto Mono)
 - **Deployment:** GitHub Actions + GitHub Pages
 
-## 📂 Project Structure
+## Project Structure
 
 コンポーネント指向に基づき、セクションごとにファイルを分割して管理しています。
 
