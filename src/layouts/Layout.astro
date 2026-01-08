@@ -1,0 +1,50 @@
+---
+// src/layouts/Layout.astro
+
+import '../styles/global.css';
+
+interface Props {
+	title: string;
+	description?: string;
+}
+
+const { title, description = "Yushin Takahashi's Portfolio" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="ja" class="scroll-smooth">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content={description} />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="generator" content={Astro.generator} />
+		<title>{title}</title>
+
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+	</head>
+	<body class="bg-base text-text font-sans antialiased selection:bg-primary selection:text-white">
+		<div class="max-w-screen-xl mx-auto border-x border-grid min-h-screen bg-white shadow-sm">
+			<slot />
+		</div>
+	</body>
+</html>
+
+<style is:global>
+	/* 全体のスクロールバーを細くスタイリッシュにする */
+	::-webkit-scrollbar {
+		width: 8px;
+	}
+	::-webkit-scrollbar-track {
+		background: #F9FAFB;
+	}
+	::-webkit-scrollbar-thumb {
+		background: #CBD5E1;
+		border-radius: 4px;
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: #94A3B8;
+	}
+</style>

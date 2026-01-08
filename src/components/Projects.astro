@@ -1,0 +1,83 @@
+---
+const projects = [
+  {
+    id: "DEV_01",
+    title: "Self-propelled Particles Simulation",
+    category: "Research / Simulation",
+    tech: ["Python", "NumPy", "Matplotlib"],
+    description: "Vicsekモデルおよび慣性スピンモデルのシミュレーション。非相反作用下における集団運動のダイナミクスを可視化・解析する研究用コードベース。",
+    link: "https://github.com/yushin-takahashi", // 実際のリンクがあれば差し替えてください
+  },
+  {
+    id: "DEV_02",
+    title: "Fragant",
+    category: "Web Application",
+    tech: ["React", "Firebase", "TypeScript"],
+    description: "高専生向け教科書解答共有プラットフォーム。「Hack U KOSEN 2021」出場作品。解答のない専門書の問題解決を学生間の集合知でサポートする。",
+    link: "#",
+  },
+  {
+    id: "DEV_03",
+    title: "Super Volt Maker",
+    category: "Game Dev / Unity",
+    tech: ["C#", "Unity"],
+    description: "災害対策をテーマにしたカードゲームのアプリ化プロジェクト。高専の創成工学演習にて開発し、オープンキャンパスで展示。",
+    link: "#",
+  },
+  {
+    id: "BIZ_01",
+    title: "Frail Detection System",
+    category: "Business Logic",
+    tech: ["Data Analysis", "Ideation"],
+    description: "東京ガスビジネスコンテスト最優秀賞受賞提案。ガス利用データから高齢者のフレイル（虚弱）状態を検知するアルゴリズムとサービスモデルの構築。",
+    link: "#",
+  }
+];
+---
+
+<section id="works" class="relative border-b border-grid bg-base">
+  <div class="absolute top-4 left-4 text-[10px] font-mono text-gray-400">
+    SECTION: WORKS // ID: 003
+  </div>
+
+  <div class="max-w-screen-xl mx-auto px-8 md:px-16 py-20">
+    <h2 class="text-2xl font-bold mb-12 flex items-center gap-3">
+      <span class="text-primary font-mono text-lg">03.</span>
+      Selected Works
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      {projects.map((project) => (
+        <a href={project.link} class="group block h-full bg-white border border-grid hover:border-primary transition-colors relative overflow-hidden">
+          
+          <div class="flex justify-between items-center px-6 py-3 border-b border-grid bg-gray-50/50">
+            <span class="font-mono text-xs text-primary">{project.id}</span>
+            <span class="font-mono text-[10px] text-gray-400 uppercase tracking-wider">{project.category}</span>
+          </div>
+
+          <div class="p-6 md:p-8">
+            <h3 class="text-xl font-bold mb-3 text-text group-hover:text-primary transition-colors">
+              {project.title}
+            </h3>
+            
+            <div class="flex flex-wrap gap-2 mb-4">
+              {project.tech.map((t) => (
+                <span class="text-[10px] border border-gray-200 px-2 py-1 text-gray-500 font-mono">
+                  {t}
+                </span>
+              ))}
+            </div>
+
+            <p class="text-sm text-gray-600 leading-relaxed mb-4">
+              {project.description}
+            </p>
+
+            <div class="text-xs font-bold text-primary flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity absolute bottom-6 right-6">
+              View Project <span>→</span>
+            </div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>

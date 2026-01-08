@@ -1,0 +1,35 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="bg-primary text-white py-12 border-t border-grid relative overflow-hidden">
+  <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+  <div class="max-w-screen-xl mx-auto px-8 md:px-16 relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
+    
+    <div class="text-center md:text-left">
+      <h2 class="text-2xl font-bold tracking-tight mb-2">Yushin Takahashi</h2>
+      <p class="text-primary-100 text-sm opacity-80">
+        Engaged in Optimization & Collective Motion Research.
+      </p>
+    </div>
+
+    <div class="flex gap-6">
+      <a href="https://github.com/yushin-takahashi" target="_blank" class="text-white hover:text-gray-200 transition-opacity opacity-80 hover:opacity-100 text-sm font-mono flex items-center gap-2">
+        <span class="w-2 h-2 bg-white rounded-full inline-block"></span> GitHub
+      </a>
+      <a href="https://twitter.com/t_k_h_4" target="_blank" class="text-white hover:text-gray-200 transition-opacity opacity-80 hover:opacity-100 text-sm font-mono flex items-center gap-2">
+        <span class="w-2 h-2 bg-white rounded-full inline-block"></span> X (Twitter)
+      </a>
+      <a href="https://www.wantedly.com/id/yushin_takahashi" target="_blank" class="text-white hover:text-gray-200 transition-opacity opacity-80 hover:opacity-100 text-sm font-mono flex items-center gap-2">
+        <span class="w-2 h-2 bg-white rounded-full inline-block"></span> Wantedly
+      </a>
+    </div>
+  </div>
+
+  <div class="max-w-screen-xl mx-auto px-8 md:px-16 mt-12 pt-8 border-t border-white/20 text-center md:text-right">
+    <p class="font-mono text-xs opacity-60">
+      &copy; {currentYear} Yushin Takahashi. All Rights Reserved.
+    </p>
+  </div>
+</footer>
