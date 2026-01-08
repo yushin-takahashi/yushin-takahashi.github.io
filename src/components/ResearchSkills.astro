@@ -3,28 +3,28 @@ const researchTopics = [
   {
     id: "01",
     area: "Mathematical Optimization",
-    detail: "数理最適化。修士課程における主要な研究テーマとして、凸最適化および離散最適化問題への適用を探求予定。",
+    detail: "数理最適化。修士課程における主要な研究テーマとして、数理最適化を核とした信号処理・データ解析を探求予定。",
     status: "Upcoming Focus"
   },
   {
     id: "02",
     area: "Statistical Mechanics / Collective Motion",
-    detail: "自己駆動粒子系（Vicsek Model, Inertial Spin Model）における非相反作用と集団運動のダイナミクス解析。",
+    detail: "学士論文の研究内容。自己駆動粒子系（Vicsek Model, Inertial Spin Model）における非相反作用と集団運動のダイナミクス解析。",
     status: "Current Research"
   },
   {
     id: "03",
     area: "Deep Learning Dynamics",
-    detail: "TransformerモデルにおけるGrokking（遅延汎化）現象のメカニズム解明およびパラメータ変動の研究。",
+    detail: "準学士論文の研究内容。TransformerモデルにおけるGrokking現象の再現およびパラメータ変動の研究。",
     status: "Published / Thesis"
   }
 ];
 
 const technicalSkills = [
-  { name: "Python (PyTorch, NumPy, Pandas)", level: 90 },
-  { name: "Machine Learning / Data Science", level: 85 },
-  { name: "TypeScript / React / Astro", level: 75 },
-  { name: "Mathematical Modeling / Simulation", level: 80 }
+  { name: "Python (PyTorch, NumPy, Pandas)", level: 70 },
+  { name: "C, C++, C#", level: 50 },
+  { name: "Machine Learning / Data Science", level: 60 },
+  { name: "Mathematical Modeling / Simulation", level: 50 }
 ];
 ---
 
@@ -86,7 +86,7 @@ const technicalSkills = [
       <div class="mt-12 pt-8 border-t border-dashed border-gray-300">
         <p class="font-mono text-xs text-gray-400 mb-4">OTHER TOOLS & ENVIRONMENTS:</p>
         <div class="flex flex-wrap gap-2">
-          {["Docker", "Git/GitHub", "Linux", "VS Code", "LaTeX"].map((tool) => (
+          {["Git/GitHub", "VS Code", "LaTeX"].map((tool) => (
             <span class="text-xs border border-gray-300 px-3 py-1 text-gray-600 bg-white">
               {tool}
             </span>

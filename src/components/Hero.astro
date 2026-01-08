@@ -1,10 +1,29 @@
 ---
-// 更新日を自動取得（または手動設定）
-const lastUpdated = "2026.01.08";
+// src/components/Hero.astro
+
+// 現在の日時を取得
+const now = new Date();
+const options: Intl.DateTimeFormatOptions = {
+  timeZone: 'Asia/Tokyo',
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+};
+const lastUpdated = new Intl.DateTimeFormat('ja-JP', options)
+  .format(now)
+  .replace(/\//g, '.');
+
+// 初期設定値
+// Vicsek Model Parameters
+const PARTICLE_COUNT = 50;
+const SPEED = 1.0;
+const RADIUS = 40;
+const NOISE = 0.2;
+const FIELD_SIZE = 320;
 ---
 
-<section id="hero" class="relative border-b border-grid overflow-hidden">
-  <div class="absolute top-4 left-4 text-[10px] font-mono text-gray-400">
+<section id="hero" class="relative border-b border-grid bg-white overflow-hidden">
+  <div class="absolute top-4 left-4 text-[10px] font-mono text-gray-400 z-20">
     SECTION: HERO_VIEW // ID: 001
   </div>
 
@@ -16,8 +35,10 @@ const lastUpdated = "2026.01.08";
       </p>
       
       <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6 tracking-tighter text-text">
-        Yushin Takahashi
+        Yushin<br>
+        Takahashi
       </h1>
+
       <div class="flex gap-4">
         <a href="#about" class="bg-primary text-white px-6 py-3 text-sm font-bold tracking-wide hover:bg-opacity-90 transition-colors shadow-sm">
           View Profile
@@ -34,21 +55,200 @@ const lastUpdated = "2026.01.08";
       </div>
     </div>
 
-    <div class="relative bg-gray-50 border-l border-grid hidden md:flex items-center justify-center overflow-hidden">
-      <div class="absolute inset-0" style="background-image: linear-gradient(#E5E7EB 1px, transparent 1px), linear-gradient(90deg, #E5E7EB 1px, transparent 1px); background-size: 40px 40px; opacity: 0.5;"></div>
+    <div class="relative bg-gray-50 border-l border-grid hidden md:flex flex-col items-center justify-center p-12">
       
-      <div class="relative w-64 h-64 border border-primary/30 rounded-full flex items-center justify-center">
-        <div class="absolute w-[1px] h-full bg-primary/20"></div>
-        <div class="absolute h-[1px] w-full bg-primary/20"></div>
-        <div class="absolute w-2 h-2 bg-primary rounded-full top-10 left-20 animate-pulse"></div>
-        <div class="absolute w-2 h-2 bg-primary rounded-full bottom-14 right-10 animate-pulse" style="animation-delay: 0.5s"></div>
-        <div class="absolute w-2 h-2 bg-primary rounded-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-        
-        <div class="absolute -top-4 -right-4 bg-white border border-primary px-2 py-1 font-mono text-[10px] text-primary shadow-sm">
-          v: 3.5m/s
+      <div class="absolute inset-0 opacity-40 pointer-events-none" 
+           style="background-image: linear-gradient(var(--color-grid) 1px, transparent 1px), linear-gradient(90deg, var(--color-grid) 1px, transparent 1px); background-size: 40px 40px;">
+      </div>
+      
+      <div class="relative z-10">
+        <div id="sim-field" class="relative w-80 h-80 border border-primary/20 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm overflow-hidden mx-auto">
+          <div id="particles-container" class="w-full h-full relative"></div>
         </div>
       </div>
+
+<div class="mt-6 w-80 bg-white border border-primary/20 shadow-sm rounded-sm p-4 z-10">
+        
+        <div class="flex justify-between items-center border-b border-primary/10 pb-2 mb-3">
+          <span class="font-mono text-[10px] text-gray-400 tracking-wider">VICSEK_MODEL CONTROLLER</span>
+          <div class="flex items-center gap-2">
+            <span id="sim-status" class="text-[9px] text-primary animate-pulse font-bold tracking-wider">PRESS PLAY ▶</span>
+            <div id="sim-indicator" class="w-1.5 h-1.5 rounded-full bg-primary hidden"></div>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between font-mono text-[10px] text-primary mb-4 px-1 tracking-tight">
+          <span>N: <span id="val-n">{PARTICLE_COUNT}</span></span>
+          <span>&eta;: <span id="val-eta">{NOISE}</span></span>
+          <span>r_v: <span id="val-r">{RADIUS}</span></span>
+          <span>L: {FIELD_SIZE}&times;{FIELD_SIZE}</span>
+        </div>
+
+        <div class="flex gap-3">
+          <button id="btn-toggle" class="flex-1 bg-primary text-white hover:bg-primary/90 py-2 rounded-[2px] flex items-center justify-center transition-colors shadow-sm" title="Play/Pause">
+            <svg id="icon-pause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
+            <svg id="icon-play" class="w-4 h-4 pl-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          </button>
+
+          <button id="btn-reset" class="flex-1 border border-primary/30 text-primary hover:bg-primary/5 py-2 rounded-[2px] flex items-center justify-center transition-colors" title="Randomize">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+          </button>
+        </div>
+
+      </div>
+
+      </div>
+
     </div>
 
   </div>
 </section>
+
+<script>
+  // Vicsek Model Parameters
+  const PARTICLE_COUNT = 50;
+  const SPEED = 1.0;
+  const RADIUS = 40;
+  const NOISE = 0.2;
+  const FIELD_SIZE = 320;
+
+  class Particle {
+    x: number;
+    y: number;
+    angle: number;
+    nextAngle: number;
+    element: HTMLDivElement;
+
+    constructor(container: HTMLElement) {
+      this.element = document.createElement('div');
+      this.element.className = 'absolute w-1.5 h-1.5 bg-primary rounded-full shadow-sm will-change-transform flex items-center justify-center';
+      
+      const arrow = document.createElement('div');
+      arrow.innerHTML = `<svg width="6" height="6" viewBox="0 0 10 10" fill="none"><path d="M10 5L0 0V10L10 5Z" fill="currentColor"/></svg>`;
+      arrow.className = 'absolute text-primary opacity-60 transform translate-x-1.5'; 
+      this.element.appendChild(arrow);
+      container.appendChild(this.element);
+
+      this.init();
+    }
+
+    init() {
+      this.x = Math.random() * FIELD_SIZE;
+      this.y = Math.random() * FIELD_SIZE;
+      this.angle = Math.random() * Math.PI * 2;
+      this.nextAngle = this.angle;
+    }
+
+    updateRender() {
+      const deg = this.angle * (180 / Math.PI);
+      this.element.style.transform = `translate(${this.x - 3}px, ${this.y - 3}px) rotate(${deg}deg)`;
+    }
+  }
+
+  // メイン処理
+  const container = document.getElementById('particles-container');
+  const btnToggle = document.getElementById('btn-toggle');
+  const btnReset = document.getElementById('btn-reset');
+  const iconPause = document.getElementById('icon-pause');
+  const iconPlay = document.getElementById('icon-play');
+  const statusLabel = document.getElementById('sim-status');
+  const indicator = document.getElementById('sim-indicator'); // 追加
+
+  let isRunning = false;
+  let animationId: number;
+  let particles: Particle[] = [];
+
+  if (container && btnToggle && btnReset) {
+    container.innerHTML = '';
+    particles = Array.from({ length: PARTICLE_COUNT }, () => new Particle(container));
+
+    function getDistanceSq(p1: Particle, p2: Particle) {
+      let dx = Math.abs(p1.x - p2.x);
+      let dy = Math.abs(p1.y - p2.y);
+      if (dx > FIELD_SIZE / 2) dx = FIELD_SIZE - dx;
+      if (dy > FIELD_SIZE / 2) dy = FIELD_SIZE - dy;
+      return dx * dx + dy * dy;
+    }
+
+    function updateVicsek() {
+      const rSq = RADIUS * RADIUS;
+
+      for (let i = 0; i < particles.length; i++) {
+        const p1 = particles[i];
+        let sinSum = 0;
+        let cosSum = 0;
+        
+        for (let j = 0; j < particles.length; j++) {
+          const p2 = particles[j];
+          if (getDistanceSq(p1, p2) < rSq) {
+            sinSum += Math.sin(p2.angle);
+            cosSum += Math.cos(p2.angle);
+          }
+        }
+
+        const avgAngle = Math.atan2(sinSum, cosSum);
+        const noise = (Math.random() - 0.5) * NOISE;
+        p1.nextAngle = avgAngle + noise;
+      }
+
+      for (let i = 0; i < particles.length; i++) {
+        const p = particles[i];
+        p.angle = p.nextAngle;
+        p.x += Math.cos(p.angle) * SPEED;
+        p.y += Math.sin(p.angle) * SPEED;
+
+        if (p.x < 0) p.x += FIELD_SIZE;
+        if (p.x > FIELD_SIZE) p.x -= FIELD_SIZE;
+        if (p.y < 0) p.y += FIELD_SIZE;
+        if (p.y > FIELD_SIZE) p.y -= FIELD_SIZE;
+
+        p.updateRender();
+      }
+    }
+
+    function animate() {
+      if (!isRunning) return;
+      updateVicsek();
+      animationId = requestAnimationFrame(animate);
+    }
+    
+    // 初期描画
+    particles.forEach(p => p.updateRender());
+
+    btnToggle.addEventListener('click', () => {
+      isRunning = !isRunning;
+      if (isRunning) {
+        statusLabel.textContent = 'RUNNING';
+        statusLabel.className = 'text-[9px] text-emerald-600 font-bold tracking-wider';
+        
+        // インジケーターを表示し、点滅させる
+        if (indicator) {
+           indicator.classList.remove('hidden');
+           indicator.classList.add('animate-pulse');
+        }
+
+        iconPause.classList.remove('hidden');
+        iconPlay.classList.add('hidden');
+        animate();
+      } else {
+        statusLabel.textContent = 'PAUSED';
+        statusLabel.className = 'text-[9px] text-orange-500 font-bold tracking-wider';
+        
+        // インジケーターを隠す
+        if (indicator) {
+           indicator.classList.add('hidden');
+           indicator.classList.remove('animate-pulse');
+        }
+
+        iconPause.classList.add('hidden');
+        iconPlay.classList.remove('hidden');
+        cancelAnimationFrame(animationId);
+      }
+    });
+
+    btnReset.addEventListener('click', () => {
+      particles.forEach(p => p.init());
+      particles.forEach(p => p.updateRender());
+    });
+  }
+</script>
