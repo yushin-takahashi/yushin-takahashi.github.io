@@ -3,7 +3,6 @@ const navItems = [
   { name: 'About', href: '#about' },
   { name: 'Works', href: '#works' },
   { name: 'History', href: '#history' },
-  { name: 'Contact', href: '#contact' },
 ];
 ---
 
@@ -25,10 +24,43 @@ const navItems = [
       ))}
     </nav>
 
-    <button class="md:hidden text-text hover:text-primary">
+    <button id="menu-btn" class="md:hidden text-text hover:text-primary focus:outline-none p-2">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
       </svg>
     </button>
   </div>
+
+  <nav id="mobile-menu" class="hidden md:hidden border-t border-grid bg-white/95 backdrop-blur-md absolute w-full left-0 top-16 shadow-lg">
+    <div class="flex flex-col p-4 space-y-4">
+      {navItems.map((item) => (
+        <a 
+          href={item.href} 
+          class="block text-sm font-medium text-text hover:text-primary py-2 px-4 hover:bg-gray-50 rounded"
+        >
+          {item.name}
+        </a>
+      ))}
+    </div>
+  </nav>
 </header>
+
+<script>
+  // ハンバーガーメニューの開閉処理
+  const menuBtn = document.getElementById('menu-btn');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  if (menuBtn && mobileMenu) {
+    menuBtn.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    // メニュー内のリンクをクリックしたら閉じる
+    const links = mobileMenu.querySelectorAll('a');
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden');
+      });
+    });
+  }
+</script>
