@@ -30,6 +30,7 @@
 │   ├── components/       # UIコンポーネント（各セクション）
 │   │   ├── Header.astro         # スティッキーヘッダー
 │   │   ├── Hero.astro           # ファーストビュー（Vicsek Modelのモチーフ）
+│   │   ├── About.astro          # 自己紹介、経歴
 │   │   ├── ResearchSkills.astro # 研究分野と技術スタックの可視化
 │   │   ├── Projects.astro       # 成果物・プロジェクト一覧
 │   │   ├── History.astro        # 経歴・受賞歴（テーブルレイアウト）
