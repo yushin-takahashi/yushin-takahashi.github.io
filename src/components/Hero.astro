@@ -27,17 +27,18 @@ const FIELD_SIZE = 320;
     SECTION: HERO_VIEW // ID: 001
   </div>
 
-  <div class="grid grid-cols-1 md:grid-cols-2 min-h-[80vh]">
+  <div class="flex flex-col md:grid md:grid-cols-2 min-h-[80vh]">
     
-    <div class="flex flex-col justify-center px-8 md:px-16 py-20 relative z-10">
-      <p class="font-mono text-primary text-sm mb-4 tracking-widest">
-        &lt;Information Engineering Student /&gt;
-      </p>
-      
+    <div class="order-1 flex flex-col justify-center px-8 md:px-16 py-12 md:py-20 relative z-10">
+
       <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6 tracking-tighter text-text">
         Yushin<br>
         Takahashi
       </h1>
+
+      <p class="font-mono text-primary text-xs mb-4 tracking-widest">
+        &lt;Information Engineering Student /&gt;
+      </p>
 
       <div class="flex gap-4">
         <a href="#about" class="bg-primary text-white px-6 py-3 text-sm font-bold tracking-wide hover:bg-opacity-90 transition-colors shadow-sm">
@@ -49,27 +50,26 @@ const FIELD_SIZE = 320;
         </a>
       </div>
 
-      <div class="absolute bottom-8 left-8 md:left-16 font-mono text-[10px] text-gray-400">
+      <div class="hidden md:block absolute bottom-8 left-8 md:left-16 font-mono text-[10px] text-gray-400">
         <span class="block">BUILD_STATUS: STABLE</span>
         <span class="block">LAST_UPDATED: {lastUpdated}</span>
       </div>
     </div>
 
-    <div class="relative bg-gray-50 border-l border-grid hidden md:flex flex-col items-center justify-center p-12">
+    <div class="order-2 relative bg-gray-50 border-t md:border-t-0 md:border-l border-grid flex flex-col items-center justify-center p-8 md:p-12 min-h-[400px]">
       
       <div class="absolute inset-0 opacity-40 pointer-events-none" 
            style="background-image: linear-gradient(var(--color-grid) 1px, transparent 1px), linear-gradient(90deg, var(--color-grid) 1px, transparent 1px); background-size: 40px 40px;">
       </div>
       
       <div class="relative z-10">
-        <div id="sim-field" class="relative w-80 h-80 border border-primary/20 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm overflow-hidden mx-auto">
+        <div id="sim-field" class="relative w-80 h-80 max-w-[90vw] max-h-[90vw] border border-primary/20 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm overflow-hidden mx-auto">
           <div id="particles-container" class="w-full h-full relative"></div>
         </div>
       </div>
 
-<div class="mt-6 w-80 bg-white border border-primary/20 shadow-sm rounded-sm p-4 z-10">
-        
-        <div class="flex justify-between items-center border-b border-primary/10 pb-2 mb-3">
+      <div class="mt-6 w-80 max-w-[90vw] bg-white border border-primary/20 shadow-sm rounded-sm p-4 z-10">
+         <div class="flex justify-between items-center border-b border-primary/10 pb-2 mb-3">
           <span class="font-mono text-[10px] text-gray-400 tracking-wider">VICSEK_MODEL CONTROLLER</span>
           <div class="flex items-center gap-2">
             <span id="sim-status" class="text-[9px] text-primary animate-pulse font-bold tracking-wider">PRESS PLAY ▶</span>
@@ -79,9 +79,9 @@ const FIELD_SIZE = 320;
 
         <div class="flex items-center justify-between font-mono text-[10px] text-primary mb-4 px-1 tracking-tight">
           <span>N: <span id="val-n">{PARTICLE_COUNT}</span></span>
-          <span>&eta;: <span id="val-eta">{NOISE}</span></span>
-          <span>r_v: <span id="val-r">{RADIUS}</span></span>
-          <span>L: {FIELD_SIZE}&times;{FIELD_SIZE}</span>
+          <span>&eta;: <span id="val-eta">0.15</span></span>
+          <span>r_v: <span id="val-r">40</span></span>
+          <span>L: 320&times;320</span>
         </div>
 
         <div class="flex gap-3">
@@ -89,18 +89,12 @@ const FIELD_SIZE = 320;
             <svg id="icon-pause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
             <svg id="icon-play" class="w-4 h-4 pl-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
           </button>
-
           <button id="btn-reset" class="flex-1 border border-primary/30 text-primary hover:bg-primary/5 py-2 rounded-[2px] flex items-center justify-center transition-colors" title="Randomize">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
           </button>
         </div>
-
       </div>
-
-      </div>
-
     </div>
-
   </div>
 </section>
 
