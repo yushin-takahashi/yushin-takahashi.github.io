@@ -44,11 +44,11 @@ const technicalSkills = [
       <div class="space-y-8">
         {researchTopics.map((topic) => (
           <div class="group">
-            <div class="flex items-baseline justify-between mb-2">
+            <div class="flex items-center justify-between mb-2 gap-4">
               <h3 class="text-lg font-bold group-hover:text-primary transition-colors">
                 {topic.area}
               </h3>
-              <span class="font-mono text-xs text-primary border border-primary px-2 py-0.5 rounded-full opacity-70">
+              <span class="font-mono text-xs text-primary border border-primary px-2 py-0.5 rounded-full opacity-70 whitespace-nowrap text-center">
                 {topic.status}
               </span>
             </div>
@@ -65,7 +65,6 @@ const technicalSkills = [
         <span class="text-primary font-mono text-lg">02.</span>
         Engineering Stack
       </h2>
-
       <div class="space-y-8 mt-2">
         {technicalSkills.map((skill) => (
           <div>
@@ -74,15 +73,11 @@ const technicalSkills = [
               <span>{skill.level}%</span>
             </div>
             <div class="h-2 w-full bg-gray-200 overflow-hidden">
-              <div 
-                class="h-full bg-primary" 
-                style={`width: ${skill.level}%`}
-              ></div>
+              <div class="h-full bg-primary" style={`width: ${skill.level}%`}></div>
             </div>
           </div>
         ))}
       </div>
-
       <div class="mt-12 pt-8 border-t border-dashed border-gray-300">
         <p class="font-mono text-xs text-gray-400 mb-4">OTHER TOOLS & ENVIRONMENTS:</p>
         <div class="flex flex-wrap gap-2">
@@ -94,6 +89,5 @@ const technicalSkills = [
         </div>
       </div>
     </div>
-
   </div>
 </section>
