@@ -35,28 +35,29 @@ const educationHistory = [
 
 <section id="about" class="relative border-b border-grid bg-white">
   <div class="absolute top-4 left-4 text-[10px] font-mono text-gray-400">
-    SECTION: ABOUT_BIO // ID: 001
+    SECTION: ABOUT_BIO // ID: 001.
   </div>
 
   <div class="max-w-screen-xl mx-auto px-8 md:px-16 py-20">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+    <div class="flex flex-col gap-16">
       
-      <div class="lg:col-span-5">
+      <div class="max-w-3xl">
         <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
           <span class="text-primary font-mono text-lg">01.</span>
           About Me
         </h2>
-        
         <div class="prose prose-sm text-gray-600 leading-relaxed space-y-4">
           <p>
-            北海道大学工学部4年の高橋優心です。
-            高専から大学編入を経て、2026年4月より東京科学大学（旧：東工大）情報理工学院に進学予定です。
+            北海道大学工学部4年の高橋優心です。<br>
+            高専から大学編入を経て、東京科学大学 (旧:東工大) 情報理工学院に進学予定です。
           </p>
           <p>
             「勝ちに不思議の勝ちあり、負けに不思議の負けなし」を座右の銘とし、論理的な思考と実装力を重視しています。
           </p>
           <p>
-            高専時代の卒業研究ではTransformerにおけるGrokking現象を、現在は自己駆動粒子系のシミュレーション研究を行っており、<strong class="text-primary">「数理モデルによる現象の記述」と「エンジニアリングによる実装」</strong>の両輪を回すことを強みとしています。
+            高専時代の卒業研究では Transformer における Grokking 現象を、現在は自己駆動粒子系のシミュレーション研究を行っており、
+            <strong class="text-primary">「数理モデルによる現象の記述」と「エンジニアリングによる実装」</strong>
+            の両輪を回すことを強みとしています。
           </p>
         </div>
 
@@ -67,44 +68,61 @@ const educationHistory = [
           是の心を顧るときは則ち不思議とす。
           故に曰ふ。又問、如何なれば不思議の負なしと云ふ。 
           曰、道に背き術に違へれば、然るときは其負疑ひ無し、故に爾に云ふ、客乃伏す。
-          （松浦静山『甲子夜話』巻四十二）
+          <br>（松浦静山『甲子夜話』巻四十二）
         </div>
       </div>
 
-      <div class="lg:col-span-7">
+<div class="max-w-3xl">
         <h3 class="text-lg font-bold mb-8 font-mono text-gray-400 flex items-center gap-2">
           <span class="w-2 h-2 bg-primary/50"></span>
           EDUCATION_PATH
         </h3>
 
-        <div class="relative pl-2">
-          <div class="absolute left-[7px] top-2 bottom-2 w-[1px] bg-grid"></div>
+        <div class="relative">
+          {educationHistory.map((edu, index) => (
+            // pb-10で下の余白を作り、その中に線を引く (最後の項目は余白なし)
+            <div class={`relative pl-10 ${index !== educationHistory.length - 1 ? 'pb-10' : ''}`}>
+              
+              {index !== educationHistory.length - 1 && (
+                <div 
+                  class={`absolute left-2 top-2 h-full w-[2px] -translate-x-1/2 z-0
+                    ${edu.status === 'Incoming' ? 'bg-gray-200' : 'bg-primary'}`}
+                ></div>
+              )}
 
-          <div class="space-y-10">
-            {educationHistory.map((edu) => (
-              <div class="relative pl-8">
-                <div class={`absolute left-0 top-1.5 w-4 h-4 rounded-full border-2 bg-white z-10
-                  ${edu.status === 'Incoming' ? 'border-primary shadow-[0_0_0_4px_rgba(0,106,102,0.1)]' : 
-                    edu.status === 'Current' ? 'border-primary bg-primary' : 
-                    'border-gray-300'}`}>
-                </div>
-
-                <span class={`font-mono text-xs block mb-1 ${edu.status === 'Graduated' ? 'text-gray-400' : 'text-primary font-bold'}`}>
-                  {edu.period}
-                </span>
-
-                <h4 class="text-base font-bold text-text">
-                  {edu.school}
-                </h4>
-                <div class="text-xs text-gray-500 mb-2">{edu.schoolJa}</div>
-
-                <div class="bg-gray-50 border border-grid rounded px-3 py-2 inline-block">
-                   <div class="text-sm font-medium text-gray-700">{edu.dept}</div>
-                   <div class="text-xs text-gray-400 mt-0.5">{edu.deptJa}</div>
-                </div>
+              <div class="absolute left-2 top-1.5 -translate-x-1/2 z-10">
+                {edu.status === 'Incoming' && (
+                  // 進学予定: 白抜き + 枠線
+                  <div class="w-4 h-4 rounded-full bg-white border-2 border-primary box-content"></div>
+                )}
+                {edu.status === 'Current' && (
+                  // 在学中: 塗りつぶし + 強調リング (Pulse)
+                  <div class="relative w-4 h-4">
+                    <div class="absolute inset-0 rounded-full bg-primary animate-pulse opacity-30 scale-150"></div>
+                    <div class="relative w-4 h-4 rounded-full bg-primary border-2 border-white ring-1 ring-primary"></div>
+                  </div>
+                )}
+                {edu.status === 'Graduated' && (
+                  // 卒業: シンプルな塗りつぶし
+                  <div class="w-4 h-4 rounded-full bg-primary border-2 border-white"></div>
+                )}
               </div>
-            ))}
-          </div>
+
+              <span class={`font-mono text-xs block mb-1 ${edu.status === 'Graduated' ? 'text-gray-400' : 'text-primary font-bold'}`}>
+                {edu.period}
+              </span>
+
+              <h4 class="text-base font-bold text-text">
+                {edu.school}
+              </h4>
+              <div class="text-xs text-gray-500 mb-2">{edu.schoolJa}</div>
+
+              <div class="bg-gray-50 border border-grid rounded px-3 py-2 inline-block">
+                 <div class="text-sm font-medium text-gray-700">{edu.dept}</div>
+                 <div class="text-xs text-gray-400 mt-0.5">{edu.deptJa}</div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
 
