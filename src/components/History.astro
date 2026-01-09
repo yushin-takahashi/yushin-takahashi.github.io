@@ -7,12 +7,13 @@ const historyData = [
   { date: "2024.03", type: "Award", title: "電気学会 北海道支部長賞", detail: "高専卒業時のもの。優秀学生賞相当" },
   { date: "2024.03", type: "Certification", title: "JDLA G検定 2024#1 合格", detail: "" },
   { date: "2024.01", type: "Research", title: "高専 準学士論文", detail: "機械学習におけるGrokkingの研究" },
-  { date: "2023.06", type: "Activity", title: "まちなかキャンパス2023 学生委員会", detail: "" },
+  { date: "2023.06", type: "Activity", title: "まちなかキャンパス学生委員", detail: "" },
   { date: "2023.04", type: "Certification", title: "TOEIC L&R IP 840点", detail: "" },
   { date: "2022.12", type: "Award", title: "グッドデザイン・ニューホープ賞 入選", detail: "まちなかキャンパス" },
   { date: "2022.11", type: "Activity", title: "旭川高専アイデアソン", detail: "地域課題解決・自動運転データ活用アイデア" },
+  { date: "2022.06", type: "Activity", title: "まちなかキャンパス学生委員 副委員長", detail: "" },
   { date: "2021.12", type: "Certification", title: "ITパスポート 合格", detail: "" },
-  { date: "2021.03", type: "Award", title: "東京ガス ビジネスコンテスト 最優秀賞", detail: "フレイル検知見守りサービスの立案" },
+  { date: "2021.03", type: "Award", title: "東京ガス ビジネスコンテスト 優秀賞", detail: "フレイル検知見守りサービスの立案" },
   { date: "2021.03", type: "Award", title: "RPAホールディングス ビジコン チーム賞", detail: "「脱スマホ依存」を目的とした対戦型スマホ抑制アプリの立案" },
 ];
 ---
@@ -22,8 +23,7 @@ const historyData = [
     SECTION: LOGS // ID: 004
   </div>
 
-  <div class="max-w-screen-xl mx-auto px-8 md:px-16 py-20">
-    <h2 class="text-2xl font-bold mb-12 flex items-center gap-3">
+  <div class="max-w-screen-xl mx-auto px-4 md:px-16 py-20"> <h2 class="text-2xl font-bold mb-12 flex items-center gap-3">
       <span class="text-primary font-mono text-lg">04.</span>
       History & Achievements
     </h2>
@@ -32,18 +32,22 @@ const historyData = [
       <table class="w-full text-left border-collapse text-sm">
         <thead class="bg-gray-50 text-gray-500 font-mono text-xs uppercase tracking-wider border-b border-grid">
           <tr>
-            <th class="p-4 w-32 border-r border-grid">Date</th>
-            <th class="p-4 w-32 border-r border-grid">Type</th>
-            <th class="p-4 border-r border-grid">Title / Event</th>
+            <th class="px-2 py-3 md:p-4 w-[1%] whitespace-nowrap border-r border-grid text-[10px] md:text-xs">Date</th>
+            <th class="px-2 py-3 md:p-4 w-[1%] whitespace-nowrap border-r border-grid text-[10px] md:text-xs">Type</th>
+            <th class="px-2 py-3 md:p-4 border-r border-grid text-[10px] md:text-xs">Title / Event</th>
             <th class="p-4 hidden md:table-cell">Detail</th>
           </tr>
         </thead>
         <tbody class="divide-y divide-grid text-gray-700">
           {historyData.map((item) => (
             <tr class="hover:bg-gray-50/50 transition-colors group">
-              <td class="p-4 font-mono text-gray-500 border-r border-grid">{item.date}</td>
-              <td class="p-4 border-r border-grid">
-                <span class={`inline-block px-2 py-0.5 text-[10px] border rounded font-mono
+              
+              <td class="px-2 py-3 md:p-4 font-mono text-gray-500 border-r border-grid whitespace-nowrap text-xs md:text-sm">
+                {item.date}
+              </td>
+
+              <td class="px-2 py-3 md:p-4 border-r border-grid whitespace-nowrap">
+                <span class={`inline-block px-1.5 py-0.5 md:px-2 text-[10px] border rounded font-mono
                   ${item.type === 'Award' ? 'text-amber-700 border-amber-200 bg-amber-50' : 
                     item.type === 'Research' ? 'text-blue-700 border-blue-200 bg-blue-50' : 
                     item.type === 'Experience' ? 'text-emerald-700 border-emerald-200 bg-emerald-50' : 
@@ -51,11 +55,16 @@ const historyData = [
                   {item.type}
                 </span>
               </td>
+
               <td class="p-4 font-bold group-hover:text-primary transition-colors border-r border-grid">
                 {item.title}
                 <div class="md:hidden text-xs text-gray-400 font-normal mt-1">{item.detail}</div>
               </td>
-              <td class="p-4 text-gray-500 hidden md:table-cell">{item.detail}</td>
+
+              <td class="p-4 text-gray-500 hidden md:table-cell w-auto">
+                {item.detail}
+              </td>
+
             </tr>
           ))}
         </tbody>
