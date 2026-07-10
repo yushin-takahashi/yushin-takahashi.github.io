@@ -9,6 +9,9 @@ interface Props {
 }
 
 const { title, description = "Yushin Takahashi's Portfolio" } = Astro.props;
+
+// canonical URL (astro.config.mjs の site 設定をベースに生成)
+const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
 ---
 
 <!doctype html>
@@ -16,10 +19,24 @@ const { title, description = "Yushin Takahashi's Portfolio" } = Astro.props;
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
+
+		{canonicalURL && <link rel="canonical" href={canonicalURL} />}
+
+		<!-- OGP -->
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:type" content="website" />
+		<meta property="og:locale" content="ja_JP" />
+		{canonicalURL && <meta property="og:url" content={canonicalURL} />}
+
+		<!-- Twitter Card -->
+		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -48,3 +65,30 @@ const { title, description = "Yushin Takahashi's Portfolio" } = Astro.props;
 		background: #94A3B8;
 	}
 </style>
+
+<script>
+	// JS有効時のみ .js クラスを付与し、.reveal の初期非表示を有効化する
+	document.documentElement.classList.add('js');
+
+	// スクロール出現アニメーション: .reveal 要素を監視して表示させる
+	const revealEls = document.querySelectorAll('.reveal');
+
+	if ('IntersectionObserver' in window && revealEls.length > 0) {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting) {
+						entry.target.classList.add('is-visible');
+						observer.unobserve(entry.target);
+					}
+				});
+			},
+			{ threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+		);
+
+		revealEls.forEach((el) => observer.observe(el));
+	} else {
+		// IntersectionObserver 非対応環境では即表示にする
+		revealEls.forEach((el) => el.classList.add('is-visible'));
+	}
+</script>

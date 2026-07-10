@@ -1,4 +1,6 @@
 ---
+import SectionHeading from './SectionHeading.astro';
+
 const researchTopics = [
   {
     id: "01",
@@ -20,26 +22,24 @@ const researchTopics = [
   }
 ];
 
+// 習熟度カテゴリ (パーセント表記は廃止し、簡潔なバッジ表記に統一)
 const technicalSkills = [
-  { name: "Python (PyTorch, NumPy, Pandas)", level: 70 },
-  { name: "C, C++, C#", level: 50 },
-  { name: "Machine Learning / Data Science", level: 60 },
-  { name: "Mathematical Modeling / Simulation", level: 50 }
+  { name: "Python (PyTorch, NumPy, Pandas)", level: "PRIMARY" },
+  { name: "C, C++, C#", level: "WORKING" },
+  { name: "Machine Learning / Data Science", level: "WORKING" },
+  { name: "Mathematical Modeling / Simulation", level: "WORKING" }
 ];
 ---
 
-<section id="skills" class="relative border-b border-grid bg-white">
+<section id="skills" class="relative border-b border-grid bg-white scroll-mt-16">
   <div class="absolute top-4 right-4 text-[10px] font-mono text-gray-400">
     SECTION: CAPABILITIES // ID: 002
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-2">
-    
-    <div class="p-8 md:p-16 border-b md:border-b-0 md:border-r border-grid">
-      <h2 class="text-2xl font-bold mb-10 flex items-center gap-3">
-        <span class="text-primary font-mono text-lg">01.</span>
-        Research Interests
-      </h2>
+
+    <div class="p-8 md:p-16 border-b md:border-b-0 md:border-r border-grid reveal">
+      <SectionHeading number="02.a" title="Research Interests" class="mb-10" />
 
       <div class="space-y-8">
         {researchTopics.map((topic) => (
@@ -60,21 +60,18 @@ const technicalSkills = [
       </div>
     </div>
 
-    <div class="p-8 md:p-16 bg-gray-50/50">
-      <h2 class="text-2xl font-bold mb-10 flex items-center gap-3">
-        <span class="text-primary font-mono text-lg">02.</span>
-        Engineering Stack
-      </h2>
-      <div class="space-y-8 mt-2">
+    <div class="p-8 md:p-16 bg-gray-50/50 reveal">
+      <SectionHeading number="02.b" title="Engineering Stack" class="mb-10" />
+      <div class="space-y-4 mt-2">
         {technicalSkills.map((skill) => (
-          <div>
-            <div class="flex justify-between mb-2 font-mono text-xs text-gray-500">
-              <span>{skill.name}</span>
-              <span>{skill.level}%</span>
-            </div>
-            <div class="h-2 w-full bg-gray-200 overflow-hidden">
-              <div class="h-full bg-primary" style={`width: ${skill.level}%`}></div>
-            </div>
+          <div class="flex items-center gap-3 font-mono text-xs">
+            <span class={`px-2 py-0.5 border rounded-[2px] tracking-wider whitespace-nowrap
+              ${skill.level === 'PRIMARY'
+                ? 'text-primary border-primary bg-primary/5'
+                : 'text-gray-500 border-gray-300 bg-white'}`}>
+              {skill.level}
+            </span>
+            <span class="text-gray-700">{skill.name}</span>
           </div>
         ))}
       </div>

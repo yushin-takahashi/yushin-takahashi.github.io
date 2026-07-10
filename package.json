@@ -1,7 +1,8 @@
 {
-  "name": "tmp",
+  "name": "portfolio",
   "type": "module",
   "version": "0.0.1",
+  "description": "Yushin Takahashi's portfolio site",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",

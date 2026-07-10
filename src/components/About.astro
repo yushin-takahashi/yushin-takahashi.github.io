@@ -1,5 +1,6 @@
 ---
 // src/components/About.astro
+import SectionHeading from './SectionHeading.astro';
 
 // 学歴データ
 const educationHistory = [
@@ -33,23 +34,20 @@ const educationHistory = [
 ];
 ---
 
-<section id="about" class="relative border-b border-grid bg-white">
+<section id="about" class="relative border-b border-grid bg-white scroll-mt-16">
   <div class="absolute top-4 left-4 text-[10px] font-mono text-gray-400">
-    SECTION: ABOUT_BIO // ID: 001.
+    SECTION: ABOUT_BIO // ID: 001
   </div>
 
   <div class="max-w-screen-xl mx-auto px-8 md:px-16 py-20">
     <div class="flex flex-col gap-16">
-      
-      <div class="max-w-3xl">
-        <h2 class="text-2xl font-bold mb-8 flex items-center gap-3">
-          <span class="text-primary font-mono text-lg">01.</span>
-          About Me
-        </h2>
-        <div class="prose prose-sm text-gray-600 leading-relaxed space-y-4">
+
+      <div class="max-w-3xl reveal">
+        <SectionHeading number="01" title="About Me" />
+        <div class="text-sm text-gray-600 leading-relaxed space-y-4">
           <p>
             北海道大学工学部4年の高橋優心です。<br>
-            高専から大学編入を経て、東京科学大学 (旧:東工大) 情報理工学院に進学しました。。
+            高専から大学編入を経て、東京科学大学 (旧:東工大) 情報理工学院に進学しました。
           </p>
           <p>
             「勝ちに不思議の勝ちあり、負けに不思議の負けなし」を座右の銘とし、論理的な思考と実装力を重視しています。
@@ -71,9 +69,9 @@ const educationHistory = [
         </div>
       </div>
 
-<div class="max-w-3xl">
+      <div class="max-w-3xl reveal">
         <h3 class="text-lg font-bold mb-8 font-mono text-gray-400 flex items-center gap-2">
-          <span class="w-2 h-2 bg-primary/50"></span>
+          <span class="w-2 h-2 bg-primary/50" aria-hidden="true"></span>
           EDUCATION_PATH
         </h3>
 
@@ -89,7 +87,7 @@ const educationHistory = [
                 ></div>
               )}
 
-              <div class="absolute left-2 top-1.5 -translate-x-1/2 z-10">
+              <div class="absolute left-2 top-1.5 -translate-x-1/2 z-10" aria-hidden="true">
                 {edu.status === 'Incoming' && (
                   // 進学予定: 白抜き + 枠線
                   <div class="w-4 h-4 rounded-full bg-white border-2 border-primary box-content"></div>

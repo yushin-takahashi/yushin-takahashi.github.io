@@ -1,6 +1,9 @@
 ---
+import SectionHeading from './SectionHeading.astro';
+
 // 全実績データを時系列順に定義
 const historyData = [
+  { date: "2026.02", type: "Research", title: "大学 学士論文", detail: "慣性スピン模型におけるカイラル相の分類" },
   { date: "2025.04", type: "Certification", title: "普通自動車運転免許", detail: "" },
   { date: "2024.11", type: "Certification", title: "TOEIC L&R 公開テスト 800点", detail: "" },
   { date: "2024.08", type: "Experience", title: "株式会社キカガク アルバイト", detail: "機械学習教材の品質管理（QA）・改善業務" },
@@ -18,15 +21,13 @@ const historyData = [
 ];
 ---
 
-<section id="history" class="relative bg-white">
+<section id="history" class="relative bg-white scroll-mt-16">
   <div class="absolute top-4 right-4 text-[10px] font-mono text-gray-400">
     SECTION: LOGS // ID: 004
   </div>
 
-  <div class="max-w-screen-xl mx-auto px-4 md:px-16 py-20"> <h2 class="text-2xl font-bold mb-12 flex items-center gap-3">
-      <span class="text-primary font-mono text-lg">04.</span>
-      History & Achievements
-    </h2>
+  <div class="max-w-screen-xl mx-auto px-4 md:px-16 py-20 reveal">
+    <SectionHeading number="04" title="History & Achievements" class="mb-12" />
 
     <div class="overflow-x-auto border border-grid">
       <table class="w-full text-left border-collapse text-sm">
