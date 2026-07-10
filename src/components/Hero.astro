@@ -22,9 +22,17 @@ const NOISE = 0.2;
 const FIELD_SIZE = 320;
 ---
 
-<section id="hero" class="relative border-b border-grid bg-white overflow-hidden">
+<section
+  id="hero"
+  class="relative border-b border-grid bg-white overflow-hidden"
+  data-particle-count={PARTICLE_COUNT}
+  data-speed={SPEED}
+  data-radius={RADIUS}
+  data-noise={NOISE}
+  data-field-size={FIELD_SIZE}
+>
   <div class="absolute top-4 left-4 text-[10px] font-mono text-gray-400 z-20">
-    SECTION: HERO_VIEW // ID: 001
+    SECTION: HERO_VIEW // ID: 000
   </div>
 
   <div class="flex flex-col md:grid md:grid-cols-2 min-h-[80vh]">
@@ -33,7 +41,7 @@ const FIELD_SIZE = 320;
 
       <h1 class="text-5xl md:text-7xl font-bold leading-tight mb-6 tracking-tighter text-text">
         Yushin<br>
-        Takahashi
+        Takahashi<span class="text-primary">.</span>
       </h1>
 
       <p class="font-mono text-primary text-xs mb-4 tracking-widest">
@@ -41,12 +49,12 @@ const FIELD_SIZE = 320;
       </p>
 
       <div class="flex gap-4">
-        <a href="#about" class="bg-primary text-white px-6 py-3 text-sm font-bold tracking-wide hover:bg-opacity-90 transition-colors shadow-sm">
+        <a href="#about" class="bg-primary text-white px-6 py-3 text-sm font-bold tracking-wide hover:bg-primary/90 transition-colors shadow-sm">
           View Profile
         </a>
-        <a href="https://github.com/yushin-takahashi" target="_blank" class="border border-grid px-6 py-3 text-sm font-bold tracking-wide text-gray-600 hover:text-primary hover:border-primary transition-colors flex items-center gap-2">
+        <a href="https://github.com/yushin-takahashi" target="_blank" rel="noopener noreferrer" class="border border-grid px-6 py-3 text-sm font-bold tracking-wide text-gray-600 hover:text-primary hover:border-primary transition-colors flex items-center gap-2">
           GitHub
-          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
         </a>
       </div>
 
@@ -58,13 +66,12 @@ const FIELD_SIZE = 320;
 
     <div class="order-2 relative bg-gray-50 border-t md:border-t-0 md:border-l border-grid flex flex-col items-center justify-center p-8 md:p-12 min-h-[400px]">
       
-      <div class="absolute inset-0 opacity-40 pointer-events-none" 
-           style="background-image: linear-gradient(var(--color-grid) 1px, transparent 1px), linear-gradient(90deg, var(--color-grid) 1px, transparent 1px); background-size: 40px 40px;">
+      <div class="absolute inset-0 opacity-40 pointer-events-none bg-blueprint-grid" aria-hidden="true">
       </div>
-      
+
       <div class="relative z-10">
         <div id="sim-field" class="relative w-80 h-80 max-w-[90vw] max-h-[90vw] border border-primary/20 rounded-xl bg-white/80 backdrop-blur-sm shadow-sm overflow-hidden mx-auto">
-          <div id="particles-container" class="w-full h-full relative"></div>
+          <div id="particles-container" class="w-full h-full relative" aria-hidden="true"></div>
         </div>
       </div>
 
@@ -73,24 +80,24 @@ const FIELD_SIZE = 320;
           <span class="font-mono text-[10px] text-gray-400 tracking-wider">VICSEK_MODEL CONTROLLER</span>
           <div class="flex items-center gap-2">
             <span id="sim-status" class="text-[9px] text-primary animate-pulse font-bold tracking-wider">PRESS PLAY ▶</span>
-            <div id="sim-indicator" class="w-1.5 h-1.5 rounded-full bg-primary hidden"></div>
+            <div id="sim-indicator" class="w-1.5 h-1.5 rounded-full bg-primary hidden" aria-hidden="true"></div>
           </div>
         </div>
 
         <div class="flex items-center justify-between font-mono text-[10px] text-primary mb-4 px-1 tracking-tight">
           <span>N: <span id="val-n">{PARTICLE_COUNT}</span></span>
-          <span>&eta;: <span id="val-eta">0.15</span></span>
-          <span>r_v: <span id="val-r">40</span></span>
-          <span>L: 320&times;320</span>
+          <span>&eta;: <span id="val-eta">{NOISE}</span></span>
+          <span>r_v: <span id="val-r">{RADIUS}</span></span>
+          <span>L: <span id="val-l">{FIELD_SIZE}&times;{FIELD_SIZE}</span></span>
         </div>
 
         <div class="flex gap-3">
-          <button id="btn-toggle" class="flex-1 bg-primary text-white hover:bg-primary/90 py-2 rounded-[2px] flex items-center justify-center transition-colors shadow-sm" title="Play/Pause">
-            <svg id="icon-pause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
-            <svg id="icon-play" class="w-4 h-4 pl-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+          <button id="btn-toggle" class="flex-1 bg-primary text-white hover:bg-primary/90 py-2 rounded-[2px] flex items-center justify-center transition-colors shadow-sm" title="Play/Pause" aria-label="シミュレーションの再生・一時停止">
+            <svg id="icon-pause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
+            <svg id="icon-play" class="w-4 h-4 pl-0.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
           </button>
-          <button id="btn-reset" class="flex-1 border border-primary/30 text-primary hover:bg-primary/5 py-2 rounded-[2px] flex items-center justify-center transition-colors" title="Randomize">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+          <button id="btn-reset" class="flex-1 border border-primary/30 text-primary hover:bg-primary/5 py-2 rounded-[2px] flex items-center justify-center transition-colors" title="Randomize" aria-label="粒子配置をランダムにリセット">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
           </button>
         </div>
       </div>
@@ -100,11 +107,13 @@ const FIELD_SIZE = 320;
 
 <script>
   // Vicsek Model Parameters
-  const PARTICLE_COUNT = 50;
-  const SPEED = 1.0;
-  const RADIUS = 40;
-  const NOISE = 0.2;
-  const FIELD_SIZE = 320;
+  // frontmatter (表示用) の値と一致させるため、section 要素の data-* 属性から読み取る
+  const heroSection = document.getElementById('hero');
+  const PARTICLE_COUNT = Number(heroSection?.dataset.particleCount ?? 50);
+  const SPEED = Number(heroSection?.dataset.speed ?? 1.0);
+  const RADIUS = Number(heroSection?.dataset.radius ?? 40);
+  const NOISE = Number(heroSection?.dataset.noise ?? 0.2);
+  const FIELD_SIZE = Number(heroSection?.dataset.fieldSize ?? 320);
 
   class Particle {
     x: number;
@@ -152,7 +161,7 @@ const FIELD_SIZE = 320;
   let animationId: number;
   let particles: Particle[] = [];
 
-  if (container && btnToggle && btnReset) {
+  if (container && btnToggle && btnReset && iconPause && iconPlay && statusLabel) {
     container.innerHTML = '';
     particles = Array.from({ length: PARTICLE_COUNT }, () => new Particle(container));
 

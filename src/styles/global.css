@@ -35,3 +35,52 @@ body::before {
   pointer-events: none;
   z-index: -1;
 }
+
+/* 設計図グリッド背景の共通ユーティリティ (Hero/Footer 等で使い回す) */
+.bg-blueprint-grid {
+  background-image:
+    linear-gradient(var(--color-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--color-grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* Footer用: 濃色背景に映える白線版 */
+.bg-blueprint-grid-light {
+  background-image:
+    linear-gradient(#ffffff 1px, transparent 1px),
+    linear-gradient(90deg, #ffffff 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* フォーカスリング: キーボード操作時のみ視認性を確保 */
+:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* スクロール出現アニメーション */
+/* JS無効時は常に表示。html.js が付与された場合のみ初期非表示にする */
+html.js .reveal {
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+html.js .reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* アニメーションの低減設定を優先 */
+@media (prefers-reduced-motion: reduce) {
+  html.js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .animate-pulse {
+    animation: none !important;
+  }
+  * {
+    scroll-behavior: auto !important;
+  }
+}
