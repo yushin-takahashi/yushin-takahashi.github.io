@@ -1,67 +1,13 @@
 ---
 import SectionHeading from './SectionHeading.astro';
+import { projects } from '../data/projects';
+import { t, type Lang } from '../i18n';
 
-// IDは制作年代順の固定連番(古い順)。配列は表示順(新しい順)。
-// 新規追加時は次のID(現在の最大+1)を振り、配列の先頭に挿入する。既存IDは変更しない。
-const projects = [
-  {
-    id: "DEV_05",
-    date: "2026.07",
-    title: "Absence of O(2) symmetry in the Vicsek model",
-    category: "Research / Physics / Active Matter",
-    tech: ["Python", "NumPy / Pandas", "C++", "pybind11"],
-    description: "Vicsek模型の相転移が二次元回転対称性O(2)の自発的破れに起因するという従来の理解に対し、元のVicsek模型にはO(2)対称性が実在しないことを数値的に実証した。Physical Review E 採択。日本物理学会 第81回年次大会にて発表予定。",
-    links: [
-      { label: "Arxiv", url: "https://arxiv.org/abs/2604.00930" },
-      { label: "Physical Review E", url: "https://journals.aps.org/pre/abstract/10.1103/9gcy-ky3z" },
-      { label: "JPS2026 (Coming Soon)", url: "" }
-    ]
-  },
-  {
-    id: "DEV_04",
-    date: "2026.02",
-    title: "慣性スピン模型におけるカイラル相の分類",
-    category: "Research / Physics / Active Matter",
-    tech: ["Python", "NumPy / Pandas", "C++", "pybind11"],
-    description: "集団運動におけるカイラル相の分類指標の多くが2次元座標系に依存し、3次元以上への拡張が困難という課題に対し、次元に依存しない新指標「平均平面相関(MPC)」を提案。3次元慣性スピン模型においてその有用性を確認した。",
-    links: [
-      { label: "論文", url: "https://drive.google.com/file/d/12teHwIMx2By0e1EQrIVuXrwxwdr4RWJd/view?usp=sharing" }
-    ],
-  },
-  {
-    id: "DEV_03",
-    date: "2024.01",
-    title: "TransformerによるGrokking現象の再現と解析",
-    category: "Research / Machine Learning",
-    tech: ["Python", "NumPy", "PyTorch", "Google Colab"],
-    description: "小規模なTransformerモデルを用いて、モジュラ演算タスクにおけるGrokking現象を再現し、損失関数の推移や内部パラメータの可視化を通じてその発生メカニズムを検証する実験。",
-    links: [
-      { label: "Colab", url: "https://colab.research.google.com/drive/1Y5AQl7gkYdPNIqI5eN0X9Cgea98Tagxe" }
-    ],
-  },
-  {
-    id: "DEV_02",
-    date: "2023.02",
-    title: "Super Volt Maker",
-    category: "Game Dev / Unity",
-    tech: ["C#", "Unity"],
-    description: "災害対策をテーマにしたカードゲームのアプリ化プロジェクト。高専の創成工学演習にて開発し、オープンキャンパスで展示。",
-    links: [
-      {label: "URL (準備中)", url: "" }
-    ],
-  },
-  {
-    id: "DEV_01",
-    date: "2021.12",
-    title: "Fragant",
-    category: "Web Application",
-    tech: ["Flutter", "Go", "Firebase"],
-    description: "「Hack U KOSEN 2021」出場。高専生向け教科書解答共有プラットフォーム。解答のない専門書の問題解決を学生間の集合知でサポートする。",
-    links: [
-      { label: "発表資料", url: "https://drive.google.com/file/d/1G2YnhPu6KdshckxOVf-oIWCy6_4dgXqf/view?usp=sharing" }
-    ],
-  }
-];
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'ja' } = Astro.props;
 ---
 
 <section id="works" class="relative border-b border-grid bg-base scroll-mt-16">
@@ -85,7 +31,7 @@ const projects = [
 
             <div class="p-6 md:p-8">
               <h3 class="text-xl font-bold mb-3 text-text group-hover:text-primary transition-colors">
-                {project.title}
+                {t(project.title, lang)}
               </h3>
 
               <div class="flex flex-wrap gap-2 mb-4">
@@ -97,15 +43,21 @@ const projects = [
               </div>
 
               <p class="text-sm text-gray-600 leading-relaxed mb-4">
-                {project.description}
+                {t(project.description, lang)}
               </p>
 
               {hasLinks ? (
                 <div class="flex flex-wrap gap-x-4 gap-y-1 pt-4 border-t border-dashed border-gray-200">
                   {project.links.map((l) => (
-                    <a href={l.url} target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-primary hover:underline underline-offset-4 flex items-center gap-1 font-mono">
-                      {l.label} <span aria-hidden="true">→</span>
-                    </a>
+                    l.url ? (
+                      <a href={l.url} target="_blank" rel="noopener noreferrer" class="text-xs font-bold text-primary hover:underline underline-offset-4 flex items-center gap-1 font-mono">
+                        {t(l.label, lang)} <span aria-hidden="true">→</span>
+                      </a>
+                    ) : (
+                      <span class="text-xs text-gray-400 flex items-center gap-1 font-mono">
+                        {t(l.label, lang)}
+                      </span>
+                    )
                   ))}
                 </div>
               ) : (

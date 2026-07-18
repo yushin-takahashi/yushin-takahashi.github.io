@@ -1,5 +1,17 @@
 ---
 // src/components/Hero.astro
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'ja' } = Astro.props;
+
+const labels = {
+  toggle: lang === 'en' ? 'Play/pause simulation' : 'シミュレーションの再生・一時停止',
+  reset: lang === 'en' ? 'Randomize particle positions' : '粒子配置をランダムにリセット',
+};
 
 // 現在の日時を取得
 const now = new Date();
@@ -48,6 +60,26 @@ const FIELD_SIZE = 320;
         &lt;Computer Science, Master's Student /&gt;
       </p>
 
+      <!-- ハイライト実績バッジ -->
+      <div class="flex flex-wrap gap-2 mb-8">
+        <a
+          href="https://journals.aps.org/pre/abstract/10.1103/9gcy-ky3z"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wide border border-primary/40 bg-primary/5 text-primary px-2.5 py-1 rounded-full hover:bg-primary/10 hover:border-primary transition-colors"
+        >
+          <span class="w-1.5 h-1.5 rounded-full bg-primary" aria-hidden="true"></span>
+          Published in Physical Review E (2026)
+        </a>
+        <a
+          href="#history"
+          class="inline-flex items-center gap-1.5 font-mono text-[10px] tracking-wide border border-amber-300 bg-amber-50 text-amber-700 px-2.5 py-1 rounded-full hover:bg-amber-100 hover:border-amber-400 transition-colors"
+        >
+          <span class="w-1.5 h-1.5 rounded-full bg-amber-500" aria-hidden="true"></span>
+          Good Design New Hope Award (2022)
+        </a>
+      </div>
+
       <div class="flex gap-4">
         <a href="#about" class="bg-primary text-white px-6 py-3 text-sm font-bold tracking-wide hover:bg-primary/90 transition-colors shadow-sm">
           View Profile
@@ -92,11 +124,11 @@ const FIELD_SIZE = 320;
         </div>
 
         <div class="flex gap-3">
-          <button id="btn-toggle" class="flex-1 bg-primary text-white hover:bg-primary/90 py-2 rounded-[2px] flex items-center justify-center transition-colors shadow-sm" title="Play/Pause" aria-label="シミュレーションの再生・一時停止">
+          <button id="btn-toggle" class="flex-1 bg-primary text-white hover:bg-primary/90 py-2 rounded-[2px] flex items-center justify-center transition-colors shadow-sm" title="Play/Pause" aria-label={labels.toggle}>
             <svg id="icon-pause" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg>
             <svg id="icon-play" class="w-4 h-4 pl-0.5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
           </button>
-          <button id="btn-reset" class="flex-1 border border-primary/30 text-primary hover:bg-primary/5 py-2 rounded-[2px] flex items-center justify-center transition-colors" title="Randomize" aria-label="粒子配置をランダムにリセット">
+          <button id="btn-reset" class="flex-1 border border-primary/30 text-primary hover:bg-primary/5 py-2 rounded-[2px] flex items-center justify-center transition-colors" title="Randomize" aria-label={labels.reset}>
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
           </button>
         </div>
@@ -149,6 +181,7 @@ const FIELD_SIZE = 320;
   }
 
   // メイン処理
+  const simField = document.getElementById('sim-field');
   const container = document.getElementById('particles-container');
   const btnToggle = document.getElementById('btn-toggle');
   const btnReset = document.getElementById('btn-reset');
@@ -161,9 +194,21 @@ const FIELD_SIZE = 320;
   let animationId: number;
   let particles: Particle[] = [];
 
-  if (container && btnToggle && btnReset && iconPause && iconPlay && statusLabel) {
+  if (simField && container && btnToggle && btnReset && iconPause && iconPlay && statusLabel) {
     container.innerHTML = '';
     particles = Array.from({ length: PARTICLE_COUNT }, () => new Particle(container));
+
+    // 表示領域が FIELD_SIZE より狭い場合 (max-w-[90vw] が効く幅) は、
+    // シミュレーション座標系ごと縮小して全体が見えるようにする
+    container.style.width = `${FIELD_SIZE}px`;
+    container.style.height = `${FIELD_SIZE}px`;
+    container.style.transformOrigin = '0 0';
+    const applyScale = () => {
+      const scale = simField.clientWidth / FIELD_SIZE;
+      container.style.transform = scale < 1 ? `scale(${scale})` : '';
+    };
+    applyScale();
+    new ResizeObserver(applyScale).observe(simField);
 
     function getDistanceSq(p1: Particle, p2: Particle) {
       let dx = Math.abs(p1.x - p2.x);
@@ -209,9 +254,26 @@ const FIELD_SIZE = 320;
       }
     }
 
-    function animate() {
+    // ディスプレイのリフレッシュレートに依存しないよう、60 steps/sec の固定刻みで進める
+    const STEP_MS = 1000 / 60;
+    const MAX_STEPS_PER_FRAME = 3; // タブ復帰時などに一気に進みすぎるのを防ぐ
+    let lastTime = 0;
+    let accumulator = 0;
+
+    function animate(time: number) {
       if (!isRunning) return;
-      updateVicsek();
+      if (lastTime === 0) lastTime = time;
+      accumulator += time - lastTime;
+      lastTime = time;
+
+      let steps = 0;
+      while (accumulator >= STEP_MS && steps < MAX_STEPS_PER_FRAME) {
+        updateVicsek();
+        accumulator -= STEP_MS;
+        steps++;
+      }
+      if (steps === MAX_STEPS_PER_FRAME) accumulator = 0;
+
       animationId = requestAnimationFrame(animate);
     }
     
@@ -232,7 +294,9 @@ const FIELD_SIZE = 320;
 
         iconPause.classList.remove('hidden');
         iconPlay.classList.add('hidden');
-        animate();
+        lastTime = 0;
+        accumulator = 0;
+        animationId = requestAnimationFrame(animate);
       } else {
         statusLabel.textContent = 'PAUSED';
         statusLabel.className = 'text-[9px] text-orange-500 font-bold tracking-wider';

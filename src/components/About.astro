@@ -1,37 +1,14 @@
 ---
 // src/components/About.astro
 import SectionHeading from './SectionHeading.astro';
+import { educationHistory } from '../data/education';
+import type { Lang } from '../i18n';
 
-// 学歴データ
-const educationHistory = [
-  {
-    period: "2026.04 - ",
-    school: "Institute of Science Tokyo (Tokyo Tech)",
-    schoolJa: "東京科学大学 (旧: 東京工業大学)",
-    dept: "School of Computing, Department of Computer Science",
-    deptJa: "情報理工学院 情報工学系",
-    detail: "Master's Program",
-    status: "Current"
-  },
-  {
-    period: "2024.04 - 2026.03",
-    school: "Hokkaido University",
-    schoolJa: "北海道大学",
-    dept: "Faculty of Engineering, Department of Information and Electronics Engineering",
-    deptJa: "工学部 情報エレクトロニクス学科",
-    detail: "Bachelor of Engineering",
-    status: "Graduated"
-  },
-  {
-    period: "2019.04 - 2024.03",
-    school: "NIT, Asahikawa College",
-    schoolJa: "旭川工業高等専門学校",
-    dept: "Electrical and Information Engineering",
-    deptJa: "電気情報工学科",
-    detail: "Associate Degree of Engineering",
-    status: "Graduated"
-  }
-];
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'ja' } = Astro.props;
 ---
 
 <section id="about" class="relative border-b border-grid bg-white scroll-mt-16">
@@ -45,28 +22,53 @@ const educationHistory = [
       <div class="max-w-3xl reveal">
         <SectionHeading number="01" title="About Me" />
         <div class="text-sm text-gray-600 leading-relaxed space-y-4">
-          <p>
-            東京科学大学情報理工学院 修士1年の高橋優心です。<br>
-            高専から大学編入を経て、東京科学大学 (旧:東工大) 情報理工学院に進学しました。
-          </p>
-          <p>
-            「勝ちに不思議の勝ちあり、負けに不思議の負けなし」を座右の銘とし、論理的な思考と実装力を重視しています。
-          </p>
-          <p>
-            高専時代の卒業研究では Transformer における Grokking 現象を、学部では自己駆動粒子系のシミュレーション研究を行っており、
-            現在はグラフ信号処理についての研究を行っています。
-          </p>
+          {lang === 'en' ? (
+            <>
+              <p>
+                I'm Yushin Takahashi, a first-year master's student at the School of Computing, Institute of Science Tokyo.<br>
+                After transferring from KOSEN to Hokkaido University, I moved on to Science Tokyo (formerly Tokyo Tech).
+              </p>
+              <p>
+                My motto is "There are mysterious wins, but no mysterious losses" — I value logical thinking and the ability to implement.
+              </p>
+              <p>
+                My graduation research at KOSEN examined the Grokking phenomenon in Transformers, and my bachelor's research simulated self-propelled particle systems.
+                I currently work on graph signal processing, focusing on methods based on mathematical optimization.
+              </p>
+            </>
+          ) : (
+            <>
+              <p>
+                東京科学大学情報理工学院 修士1年の高橋優心です。<br>
+                高専から大学編入を経て、東京科学大学 (旧:東工大) 情報理工学院に進学しました。
+              </p>
+              <p>
+                「勝ちに不思議の勝ちあり、負けに不思議の負けなし」を座右の銘とし、論理的な思考と実装力を重視しています。
+              </p>
+              <p>
+                高専時代の卒業研究では Transformer における Grokking 現象を、学部では自己駆動粒子系のシミュレーション研究を行っており、
+                現在はグラフ信号処理を対象に、数理最適化に基づく手法の研究を行っています。
+              </p>
+            </>
+          )}
         </div>
 
-        <div class="mt-8 p-4 bg-gray-50 border border-grid border-l-4 border-l-primary italic text-sm text-gray-500">
-          予曰く。勝に不思議の勝あり。負に不思議の負なし。 
-          問、如何なれば不思議の勝と云う。 
-          曰く、道を遵び術を守ときは、其の心必ず勇ならずと雖ども勝ち得る。 
-          是の心を顧るときは則ち不思議とす。
-          故に曰ふ。又問、如何なれば不思議の負なしと云ふ。 
-          曰、道に背き術に違へれば、然るときは其負疑ひ無し、故に爾に云ふ、客乃伏す。
-          <br>（松浦静山『甲子夜話』巻四十二）
-        </div>
+        <details class="mt-8 bg-gray-50 border border-grid border-l-4 border-l-primary text-sm text-gray-500 group">
+          <summary class="cursor-pointer select-none p-4 font-mono text-xs text-gray-400 hover:text-primary transition-colors list-none flex items-center gap-2">
+            <span class="inline-block transition-transform group-open:rotate-90" aria-hidden="true">▸</span>
+            {lang === 'en'
+              ? "Original passage — Matsura Seizan, Kasshi Yawa, vol. 42"
+              : "出典全文: 松浦静山『甲子夜話』巻四十二"}
+          </summary>
+          <div class="px-4 pb-4 italic leading-relaxed">
+            予曰く。勝に不思議の勝あり。負に不思議の負なし。
+            問、如何なれば不思議の勝と云う。
+            曰く、道を遵び術を守ときは、其の心必ず勇ならずと雖ども勝ち得る。
+            是の心を顧るときは則ち不思議とす。
+            故に曰ふ。又問、如何なれば不思議の負なしと云ふ。
+            曰、道に背き術に違へれば、然るときは其負疑ひ無し、故に爾に云ふ、客乃伏す。
+          </div>
+        </details>
       </div>
 
       <div class="max-w-3xl reveal">

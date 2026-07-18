@@ -1,0 +1,64 @@
+---
+// src/components/Contact.astro
+import SectionHeading from './SectionHeading.astro';
+import type { Lang } from '../i18n';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'ja' } = Astro.props;
+
+// スパム対策: メールアドレスをHTMLに平文で埋め込まず、
+// 逆順にした文字列を data 属性に持たせ、クライアントJSで復元する。
+const emailReversed = 'moc.liamg@621061ihsahakat.y';
+
+const texts = {
+  lead: lang === 'en'
+    ? 'For inquiries, feel free to email me. DMs on social media are also welcome.'
+    : 'ご連絡は、下記メールアドレスまでお気軽にどうぞ。SNSのDMでも構いません。',
+  noscript: lang === 'en'
+    ? 'Email: y.takahashi160126 [at] gmail.com (replace [at] with @)'
+    : 'Email: y.takahashi160126 [at] gmail.com ([at] を @ に置き換えてください)',
+};
+---
+
+<section id="contact" class="relative border-t border-grid bg-base scroll-mt-16">
+  <div class="absolute top-4 left-4 text-[10px] font-mono text-gray-400">
+    SECTION: CONTACT // ID: 005
+  </div>
+
+  <div class="max-w-screen-xl mx-auto px-8 md:px-16 py-20 reveal">
+    <SectionHeading number="05" title="Contact" class="mb-8" />
+
+    <p class="text-sm text-gray-600 leading-relaxed max-w-2xl mb-8">
+      {texts.lead}
+    </p>
+
+    <div class="inline-flex items-center gap-3 bg-white border border-grid px-5 py-4">
+      <span class="font-mono text-[10px] text-gray-400 tracking-wider">EMAIL:</span>
+      <a
+        id="contact-email"
+        data-email-reversed={emailReversed}
+        href="#contact"
+        class="font-mono text-sm font-bold text-primary hover:underline underline-offset-4"
+      >
+        [PRESS TO DECODE]
+      </a>
+    </div>
+    <noscript>
+      <p class="mt-3 font-mono text-sm text-gray-600">{texts.noscript}</p>
+    </noscript>
+  </div>
+</section>
+
+<script>
+  // data 属性の逆順文字列からメールアドレスを復元して mailto リンク化する
+  const el = document.getElementById('contact-email');
+  const reversed = el?.dataset.emailReversed;
+  if (el instanceof HTMLAnchorElement && reversed) {
+    const email = [...reversed].reverse().join('');
+    el.textContent = email;
+    el.href = `mailto:${email}`;
+  }
+</script>

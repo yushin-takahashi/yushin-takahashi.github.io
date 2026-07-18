@@ -1,35 +1,13 @@
 ---
 import SectionHeading from './SectionHeading.astro';
+import { researchTopics, technicalSkills, otherTools } from '../data/skills';
+import { t, type Lang } from '../i18n';
 
-const researchTopics = [
-  {
-    id: "01",
-    area: "Graph Signal Processing / Graph Learning",
-    detail: "現在の主な関心領域。グラフ信号処理、特にグラフ学習に興味を持っている。",
-    status: "Current Focus"
-  },
-  {
-    id: "02",
-    area: "Statistical Mechanics / Collective Motion",
-    detail: "学士課程では、自己駆動粒子系における非相反作用と集団運動のダイナミクスを解析。統計力学的なモデリングの視点を培った。",
-    status: "Past Research"
-  },
-  {
-    id: "03",
-    area: "Deep Learning Dynamics",
-    detail: "準学士課程では、ニューラルネットワークの学習ダイナミクスそのものを対象に、Grokking現象の解析に取り組んだ。",
-    status: "Past Research"
-  }
-];
+interface Props {
+  lang?: Lang;
+}
 
-// 習熟度カテゴリ (パーセント表記は廃止し、簡潔なバッジ表記に統一)
-const technicalSkills = [
-  { name: "Python (PyTorch, NumPy, Pandas)", level: "PRIMARY" },
-  { name: "MATLAB", level: "WORKING" },
-  { name: "C, C++, C#", level: "WORKING" },
-  { name: "Machine Learning / Data Science", level: "WORKING" },
-  { name: "Mathematical Modeling / Simulation", level: "WORKING" }
-];
+const { lang = 'ja' } = Astro.props;
 ---
 
 <section id="skills" class="relative border-b border-grid bg-white scroll-mt-16">
@@ -54,7 +32,7 @@ const technicalSkills = [
               </span>
             </div>
             <p class="text-sm text-gray-600 leading-relaxed pl-4 border-l-2 border-grid group-hover:border-primary transition-colors">
-              {topic.detail}
+              {t(topic.detail, lang)}
             </p>
           </div>
         ))}
@@ -79,7 +57,7 @@ const technicalSkills = [
       <div class="mt-12 pt-8 border-t border-dashed border-gray-300">
         <p class="font-mono text-xs text-gray-400 mb-4">OTHER TOOLS & ENVIRONMENTS:</p>
         <div class="flex flex-wrap gap-2">
-          {["Git/GitHub", "VS Code", "LaTeX"].map((tool) => (
+          {otherTools.map((tool) => (
             <span class="text-xs border border-gray-300 px-3 py-1 text-gray-600 bg-white">
               {tool}
             </span>

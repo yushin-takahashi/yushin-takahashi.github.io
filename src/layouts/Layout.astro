@@ -2,20 +2,61 @@
 // src/layouts/Layout.astro
 
 import '../styles/global.css';
+import type { Lang } from '../i18n';
 
 interface Props {
 	title: string;
 	description?: string;
+	lang?: Lang;
 }
 
-const { title, description = "Yushin Takahashi's Portfolio" } = Astro.props;
+const defaultDescriptions: Record<Lang, string> = {
+	ja: "東京科学大学 情報理工学院 修士課程 高橋優心のポートフォリオ。グラフ信号処理・グラフ学習を研究。自己駆動粒子系の集団運動やGrokking現象の研究、Physical Review E 掲載論文などを紹介しています。",
+	en: "Portfolio of Yushin Takahashi, a master's student at the School of Computing, Institute of Science Tokyo, researching graph signal processing and graph learning with optimization-based methods. Includes a paper published in Physical Review E.",
+};
+
+const { title, lang = 'ja', description = defaultDescriptions[lang] } = Astro.props;
 
 // canonical URL (astro.config.mjs の site 設定をベースに生成)
 const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
+
+// hreflang 用の言語別URL
+const altJaURL = Astro.site ? new URL('/', Astro.site) : '/';
+const altEnURL = Astro.site ? new URL('/en/', Astro.site) : '/en/';
+
+// OGP画像 (public/ogp.png, 1200x630)
+const ogImageURL = Astro.site ? new URL('/ogp.png', Astro.site) : '/ogp.png';
+
+// 構造化データ (JSON-LD: Person)
+const jsonLd = {
+	"@context": "https://schema.org",
+	"@type": "Person",
+	name: "Yushin Takahashi",
+	alternateName: "高橋優心",
+	url: Astro.site?.toString(),
+	affiliation: {
+		"@type": "CollegeOrUniversity",
+		name: "Institute of Science Tokyo",
+	},
+	knowsAbout: [
+		"Graph Signal Processing",
+		"Graph Learning",
+		"Statistical Mechanics",
+		"Collective Motion",
+		"Machine Learning",
+	],
+	sameAs: [
+		"https://github.com/yushin-takahashi",
+		"https://x.com/t_k_h_4",
+		"https://instagram.com/t_k_h_4",
+		"https://www.linkedin.com/in/%E5%84%AA%E5%BF%83-%E9%AB%98%E6%A9%8B-a94a153bb/",
+		"https://www.wantedly.com/id/yushin_takahashi",
+	],
+};
 ---
 
 <!doctype html>
-<html lang="ja" class="scroll-smooth">
+<html lang={lang} class="scroll-smooth">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
@@ -26,17 +67,30 @@ const canonicalURL = Astro.site ? new URL(Astro.url.pathname, Astro.site) : unde
 
 		{canonicalURL && <link rel="canonical" href={canonicalURL} />}
 
+		<!-- 言語別ページの相互参照 -->
+		<link rel="alternate" hreflang="ja" href={altJaURL} />
+		<link rel="alternate" hreflang="en" href={altEnURL} />
+		<link rel="alternate" hreflang="x-default" href={altJaURL} />
+
 		<!-- OGP -->
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:type" content="website" />
-		<meta property="og:locale" content="ja_JP" />
+		<meta property="og:site_name" content="Yushin Takahashi - Portfolio" />
+		<meta property="og:locale" content={lang === 'en' ? 'en_US' : 'ja_JP'} />
+		<meta property="og:image" content={ogImageURL} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
 		{canonicalURL && <meta property="og:url" content={canonicalURL} />}
 
 		<!-- Twitter Card -->
-		<meta name="twitter:card" content="summary" />
+		<meta name="twitter:card" content="summary_large_image" />
 		<meta name="twitter:title" content={title} />
 		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={ogImageURL} />
+
+		<!-- 構造化データ -->
+		<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
 		<link rel="preconnect" href="https://fonts.googleapis.com">
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
