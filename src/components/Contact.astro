@@ -17,6 +17,7 @@ const texts = {
   lead: lang === 'en'
     ? 'For inquiries, feel free to email me. DMs on social media are also welcome.'
     : 'ご連絡は、下記メールアドレスまでお気軽にどうぞ。SNSのDMでも構いません。',
+  reveal: lang === 'en' ? 'Click to reveal email address' : 'クリックしてメールアドレスを表示',
   noscript: lang === 'en'
     ? 'Email: y.takahashi160126 [at] gmail.com (replace [at] with @)'
     : 'Email: y.takahashi160126 [at] gmail.com ([at] を @ に置き換えてください)',
@@ -37,14 +38,15 @@ const texts = {
 
     <div class="inline-flex items-center gap-3 bg-white border border-grid px-5 py-4">
       <span class="font-mono text-[10px] text-gray-400 tracking-wider">EMAIL:</span>
-      <a
-        id="contact-email"
+      <button
+        type="button"
+        id="contact-email-btn"
         data-email-reversed={emailReversed}
-        href="#contact"
-        class="font-mono text-sm font-bold text-primary hover:underline underline-offset-4"
+        aria-label={texts.reveal}
+        class="font-mono text-sm font-bold text-primary hover:underline underline-offset-4 bg-transparent border-0 p-0 cursor-pointer"
       >
         [PRESS TO DECODE]
-      </a>
+      </button>
     </div>
     <noscript>
       <p class="mt-3 font-mono text-sm text-gray-600">{texts.noscript}</p>
@@ -53,12 +55,19 @@ const texts = {
 </section>
 
 <script>
-  // data 属性の逆順文字列からメールアドレスを復元して mailto リンク化する
-  const el = document.getElementById('contact-email');
-  const reversed = el?.dataset.emailReversed;
-  if (el instanceof HTMLAnchorElement && reversed) {
-    const email = [...reversed].reverse().join('');
-    el.textContent = email;
-    el.href = `mailto:${email}`;
+  // クリックされるまでメールアドレスをDOMに一切書き込まない。
+  // 自動デコードだと「HTMLとして保存」やJS実行型スクレイパーに生アドレスを渡してしまうため、
+  // ユーザー操作(クリック)をトリガーにしてから復元・mailtoリンク化する。
+  const btn = document.getElementById('contact-email-btn');
+  const reversed = btn?.dataset.emailReversed;
+  if (btn instanceof HTMLButtonElement && reversed) {
+    btn.addEventListener('click', () => {
+      const email = [...reversed].reverse().join('');
+      const link = document.createElement('a');
+      link.href = `mailto:${email}`;
+      link.textContent = email;
+      link.className = 'font-mono text-sm font-bold text-primary hover:underline underline-offset-4';
+      btn.replaceWith(link);
+    }, { once: true });
   }
 </script>
