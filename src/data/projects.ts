@@ -10,9 +10,16 @@ export interface ProjectLink {
   url: string;
 }
 
+export interface Milestone {
+  label: Localized | string;
+  date: string;
+}
+
 export interface Project {
   id: string;
   date: string;
+  /** 制作/展示/採択など、代表日付以外に補足したいマイルストーンがある場合のみ指定 */
+  milestones?: Milestone[];
   title: Localized | string;
   category: string;
   tech: string[];
@@ -24,6 +31,11 @@ export const projects: Project[] = [
   {
     id: "DEV_05",
     date: "2026.07",
+    milestones: [
+      { label: "Arxiv", date: "2026.04" },
+      { label: { ja: "採択", en: "Accepted" }, date: "2026.06" },
+      { label: { ja: "出版", en: "Published" }, date: "2026.07" },
+    ],
     title: "Absence of O(2) symmetry in the Vicsek model",
     category: "Research / Physics / Active Matter",
     tech: ["Python", "NumPy / Pandas", "C++", "pybind11"],
@@ -83,6 +95,9 @@ export const projects: Project[] = [
   {
     id: "DEV_02",
     date: "2023.02",
+    milestones: [
+      { label: { ja: "展示", en: "Exhibited" }, date: "2023.07" },
+    ],
     title: "Super Volt Maker",
     category: "Game Dev / Unity",
     tech: ["C#", "Unity"],
