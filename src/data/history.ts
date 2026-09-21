@@ -20,6 +20,21 @@ export interface HistoryItem {
 
 export const historyData: HistoryItem[] = [
   {
+    date: "2026.09", type: "Certification",
+    title: { ja: "東京大学 GCI 寄付講座 Advanced 修了", en: "UTokyo GCI (Global Consumer Intelligence) Course, Advanced Completion" },
+    detail: { ja: "グローバル消費インテリジェンス寄付講座(松尾・岩澤研究室監修)。模範賞", en: "Chair for Global Consumer Intelligence, supervised by Matsuo-Iwasawa Lab. Exemplary Performance Award" }
+  },
+  {
+    date: "2026.09", type: "Certification",
+    title: { ja: "JDLA E資格 2026#2 合格", en: "JDLA Deep Learning for ENGINEER 2026#2" },
+    detail: ""
+  },
+  {
+    date: "2026.07", type: "Certification",
+    title: { ja: "東京大学 松尾・岩澤研究室 深層学習 Deep Learning 基礎講座 修了", en: "UTokyo Matsuo-Iwasawa Lab Deep Learning Foundation Course, Completion" },
+    detail: ""
+  },
+  {
     date: "2026.06", type: "Publication",
     title: { ja: "Physical Review E 採択", en: "Paper accepted in Physical Review E" },
     detail: "Absence of O(2) symmetry in the Vicsek model"
