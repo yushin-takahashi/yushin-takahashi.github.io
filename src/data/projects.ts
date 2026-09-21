@@ -40,8 +40,8 @@ export const projects: Project[] = [
     category: "Research / Physics / Active Matter",
     tech: ["Python", "NumPy / Pandas", "C++", "pybind11"],
     description: {
-      ja: "Vicsek模型の相転移が二次元回転対称性O(2)の自発的破れに起因するという従来の理解に対し、元のVicsek模型にはO(2)対称性が実在しないことを数値的に実証した。Physical Review E 採択。日本物理学会 第81回年次大会にて発表予定。",
-      en: "Contrary to the conventional understanding that the phase transition of the Vicsek model originates from spontaneous breaking of the two-dimensional rotational symmetry O(2), we numerically demonstrated that the original Vicsek model has no O(2) symmetry. Accepted in Physical Review E; to be presented at the 81st JPS Annual Meeting.",
+      ja: "Vicsek模型の相転移が二次元回転対称性O(2)の自発的破れに起因するという従来の理解に対し、元のVicsek模型にはO(2)対称性が実在しないことを数値的に実証した。Physical Review E 採択。日本物理学会 第81回年次大会にて発表。",
+      en: "Contrary to the conventional understanding that the phase transition of the Vicsek model originates from spontaneous breaking of the two-dimensional rotational symmetry O(2), we numerically demonstrated that the original Vicsek model has no O(2) symmetry. Accepted in Physical Review E; presented at the 81st JPS Annual Meeting.",
     },
     links: [
       { label: "Arxiv", url: "https://arxiv.org/abs/2604.00930" },
