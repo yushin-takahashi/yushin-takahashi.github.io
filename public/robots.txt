@@ -1,4 +1,2 @@
 User-agent: *
-Allow: /
-
-Sitemap: https://yushin-takahashi.github.io/sitemap-index.xml
+Disallow: /
